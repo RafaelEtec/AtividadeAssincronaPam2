@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,27 +14,43 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.animation.ImageMatrixProperty;
 
 public class MapsFragment extends Fragment {
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
+        private GoogleMap mMap;
+
         @Override
         public void onMapReady(GoogleMap googleMap) {
-            LatLng sydney = new LatLng(-23.587963, -46.659491);
-            googleMap.addMarker(new MarkerOptions().position(sydney).title("Parque Ibirapuera"));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+            mMap = googleMap;
+            final LatLng Parque = new LatLng(-23.587963, -46.659491);
+
+            CircleOptions circleOptions = new CircleOptions();
+            circleOptions.center(Parque);
+            circleOptions.fillColor(Color.argb(50, 0, 100, 0));
+            circleOptions.strokeWidth(10);
+            circleOptions.strokeColor(Color.GREEN);
+
+            circleOptions.radius(950.0);
+
+            mMap.addCircle(circleOptions);
+
+            mMap.addMarker(new MarkerOptions()
+                .position(Parque)
+                .title("Parque Ibirapuera")
+                .icon(
+                        BitmapDescriptorFactory.fromResource(R.drawable.park)
+                )
+            );
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Parque, 13));
         }
     };
 
